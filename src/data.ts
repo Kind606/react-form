@@ -1,11 +1,21 @@
-export interface Post {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  author: string;
-  createdAt: Date;
-}
+import { z } from "zod";
+
+export const PostSchema = z.object({
+  id: z.string(),
+  title: z.string().min(3, "Title måste ha minst 3 karaktärer(s)").max(30),
+  description: z.string().max(200).nonempty(),
+  image: z.string().url(),
+  author: z.string().min(2),
+  createdAt: z.date(),
+});
+
+export const PostCreateSchema = PostSchema.omit({
+  id: true,
+  createdAt: true,
+});
+
+export type Post = z.infer<typeof PostSchema>;
+export type PostCreate = z.infer<typeof PostCreateSchema>;
 
 export const mockedPosts: Post[] = [
   {
