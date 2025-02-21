@@ -1,29 +1,25 @@
-import { FormEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Post } from "./data";
 
 export default function HomePage() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
-  const [author, setAuthor] = useState("");
+  const { register, handleSubmit } = useForm<Post>();
 
-  const savePost = (event: FormEvent) => {
-    event.preventDefault();
-    console.log(title, description, image, author);
-  }
+  const savePost = (post: Post) => {
+    console.log(post)
+  };
 
   return (
     <div>
       <h1>HomePage</h1>
-      <form onSubmit={savePost}>
+      <form onSubmit={handleSubmit(savePost)}>
+        <input type="text" placeholder="Titel" {...register("title")} />
         <input
           type="text"
-          placeholder="Titel"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
+          placeholder="Description"
+          {...register("description")}
         />
-        <input type="text" placeholder="Description" />
-        <input type="text" placeholder="Image" />
-        <input type="text" placeholder="Author" />
+        <input type="text" placeholder="Image" {...register("image")} />
+        <input type="text" placeholder="Author" {...register("author")} />
         <button type="submit">Save</button>
       </form>
     </div>
